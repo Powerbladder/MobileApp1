@@ -87,6 +87,7 @@
     <Compile Include="Assets\Scripts\Battle.cs" />
     <Compile Include="Assets\Scripts\Character.cs" />
     <Compile Include="Assets\Scripts\InputManager.cs" />
+    <Compile Include="Assets\Scripts\MovementManager.cs" />
     <Compile Include="Assets\Scripts\Player.cs" />
     <Compile Include="Assets\TileData\TDMap.cs" />
     <Compile Include="Assets\TileData\TDTile.cs" />
