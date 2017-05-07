@@ -5,6 +5,8 @@ using System.Collections;
 public class Player
 {
     public Character[] characters;  // List of all of the characters belonging to this player
+    public int team;                // ID of the Player's "team" for use in determining a winner
+
     int numChars = 1;               // Total number of character belonging to the player
     string charClass;               // Main class for the character
 

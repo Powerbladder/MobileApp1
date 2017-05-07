@@ -28,9 +28,14 @@ public class Character
 
 		currDir = (int)Direction.NE;    // Character is facing NE
 
-        position = new Vector3(x, 0, z);       // Initialize the character's position
-        // position.y = charObject.transform.lossyScale.y / 2.0f;  // Translate the char model on the Y based on half the model's height
-	}
+        string assetPath = "Characters/" + charClass;
+
+        charObject = GameObject.Instantiate(Resources.Load(assetPath)) as GameObject;
+        float y = charObject.transform.GetChild(0).transform.lossyScale.y / 2.0f;   // Set character's Y position to half its height
+        Quaternion r = Quaternion.Euler(0f, currDir, 0f);                           // Rotation is facing NE
+        charObject.transform.position = new Vector3(x, y, z);                       // Initialize the character's position
+        charObject.transform.rotation = r;                                          // Initialize the character's rotation
+    }
 
     //  Moves the character to the specified position; translate on the Y based on model's height
     public void MoveCharacter(Vector3 newPosition)
