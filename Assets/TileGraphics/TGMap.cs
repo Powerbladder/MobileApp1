@@ -21,7 +21,7 @@ public class TGMap : MonoBehaviour {
 		BuildMesh();
 	}
 	
-	public void DefineUV()
+	public void DefineUV()  // Currently not used; need to finish building
 	{	
 		// Get the number of individual images defined in the main texture
 		int numTilesPerRow = terrainTiles.width / tileResolution;
