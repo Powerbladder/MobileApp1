@@ -6,8 +6,6 @@ public class Character
 {
 	enum Direction : int {NW=180, NE=-90, SW=90, SE=0};
 
-    public Vector3 position;            // Character's position
-
     public int currDir;	                // Direction character is currently facing
 	
 	int maxHP = 100;                    // Character's maximum hit points
@@ -40,10 +38,10 @@ public class Character
     //  Moves the character to the specified position; translate on the Y based on model's height
     public void MoveCharacter(Vector3 newPosition)
     {
-        position.x = newPosition.x;                                            // Set the conceptual position to the new position
-        position.y = charObject.transform.GetChild(0).transform.lossyScale.y / 2.0f;  // Set the conceptual Y to half the model's height (have to use the child since the object is inside of an empty wrapper
-        position.z = newPosition.z;
-
-        charObject.transform.position = position;               // Set the actual model to the appropriate position
+        charObject.transform.position = new Vector3(
+            newPosition.x,
+            charObject.transform.GetChild(0).transform.lossyScale.y / 2.0f,
+            newPosition.z
+        );               // Set the actual model to the appropriate position
     }
 }

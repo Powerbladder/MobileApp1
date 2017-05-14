@@ -9,10 +9,6 @@ public class Battle : MonoBehaviour {
 
     Player[] players;
 
-    GameObject tileMapGameObject;                           // Stores the map object the player(s) are fighting on
-    TGMap _tileMap;                                         // Stores the TileMap "game board"
-    float halfTile;                                         // Half of a tile's width
-
     GameObject restricted;                                  // Get the restricted area
     bool isSetup;               // Is this the setup phase of the battle?
     bool isSelected;            // Do we have a tile selected?
@@ -27,18 +23,8 @@ public class Battle : MonoBehaviour {
         isSetup = true;
         isSelected = false;
 
-        tileMapGameObject = GameObject.Find("TileMap");             // Get the larger map object
-        _tileMap = tileMapGameObject.GetComponent<TGMap>();         // Get the TGMap inside of the map object
-
-        restricted = GameObject.Find("Restricted");                 // Get the restricted area
-
-        // Initialize some basic map information
-        halfTile = _tileMap.tileSize / 2.0f;                        // Get half of the size of a single tile
-        float halfRowSize = _tileMap.size_z * halfTile;             // Get half of the height of the map
-
-        float offSet = 0.0f;
-        if (_tileMap.size_z % 2 == 0)                               // If the map height is even, no need to offset by half the tile size
-            offSet = halfTile;
+        restricted = GameObject.Instantiate(Resources.Load("Map/Restricted")) as GameObject;                 // Get the restricted area
+        restricted.transform.position = new Vector3(52.5f, 0.01f, 25f);
 
         //       charList = new Dictionary<int, Character>();
         pathList = new Dictionary<int, GameObject>();
@@ -47,28 +33,32 @@ public class Battle : MonoBehaviour {
         
         for(int x=0; x<numPlayers; x++)         // Create a new Player object for each player in the battle
         {
-            players[x] = new Player(halfTile, halfRowSize + offSet); // Initialize the player
+            //         players[x] = new Player(halfTile, halfRowSize + offSet); // Initialize the player
+            players[x] = new Player(0, 0);    // Initialize the player
+
 
             // For each character attached to this player, add the character to the battle list
-  //          for(int i=0; i<players[x].characters.Length; i++)
-  //          {
- //               int charID = players[x].characters[i].charObject.GetInstanceID();
- //               charList[charID] = players[x].characters[i];            // Store the Character in the character list using its GameObject ID as the key
-  //          } // end inner for
+            //          for(int i=0; i<players[x].characters.Length; i++)
+            //          {
+            //               int charID = players[x].characters[i].charObject.GetInstanceID();
+            //               charList[charID] = players[x].characters[i];            // Store the Character in the character list using its GameObject ID as the key
+            //          } // end inner for
         } // end outer for
 	} // end Start
 	
     // Moves the character to the selected tile or shows the path from the character to the selected tile
-    public void MoveOrSelectPath(Vector3 newPosition)
+    public void MoveOrSelectPath(TileCoordinates coordinates)
     {
         if(isSetup) // If we are still in the setup phase, move the character to the specified location
         {
-            players[0].MoveCharacter(newPosition);  // Move the character
+            //      players[0].MoveCharacter(newPosition);  // Move the character
+            MovementManager.MoveObject(players[0].characters[0].charObject, coordinates);
             isSetup = false;                        // No longer in the setup phase
             Destroy(restricted);                    // Destroy the restricted area
         }
         else                // Show path to selected tile
         {
+            /*
             if(isSelected)  // If we already have a path showing, remove it first
             {
                 foreach(KeyValuePair<int, GameObject> entry in pathList)    // For all items in the pathlist, deleted the associated game object
@@ -84,6 +74,7 @@ public class Battle : MonoBehaviour {
                 ShowPath(players[0].characters[0].position, newPosition);
                 isSelected = true;
             }
+            */
         }
             
     } // end MoveorSelectCharacter
