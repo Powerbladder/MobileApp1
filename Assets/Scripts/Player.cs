@@ -10,7 +10,9 @@ public class Player
     int numChars = 1;               // Total number of character belonging to the player
     string charClass;               // Main class for the character
 
-	public Player(float x, float z)
+    public TileCoordinates coordinates;        // Main character's location on the game board
+
+    public Player(float x, float z)
 	{
         charClass = "Mage";         // Placeholder, change later for real class setup
 
@@ -18,11 +20,5 @@ public class Player
 
         for(int i=0; i<numChars; i++)
             characters[i] = new Character(charClass, x, z);        // Create a new character model on the first column, halfway up the map
-    }
-
-    //  Moves the player's character to the specified position
-    public void MoveCharacter(Vector3 newPosition)
-    {
-        characters[0].MoveCharacter(newPosition);
     }
 }

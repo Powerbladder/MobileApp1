@@ -7,11 +7,11 @@ public class Battle : MonoBehaviour {
     
     public int numPlayers = 1;      // Number of players in the battle (for now, AI counts as players)
 
-    Player[] players;
+    public Player[] players;        // Contains all of the players in the battle
 
-    GameObject restricted;                                  // Get the restricted area
-    bool isSetup;               // Is this the setup phase of the battle?
-    bool isSelected;            // Do we have a tile selected?
+    GameObject restricted;          // Get the restricted area
+    bool isSetup;                   // Is this the setup phase of the battle?
+    bool isSelected;                // Do we have a tile selected?
 
     static Dictionary<int, GameObject> pathList;            // Dictionary containing all of the objects for the highlighted movement path
 
@@ -53,6 +53,7 @@ public class Battle : MonoBehaviour {
         {
             //      players[0].MoveCharacter(newPosition);  // Move the character
             MovementManager.MoveObject(players[0].characters[0].charObject, coordinates);
+            players[0].coordinates = coordinates;   // Set the player's coordinates on the TileGrid
             isSetup = false;                        // No longer in the setup phase
             Destroy(restricted);                    // Destroy the restricted area
         }
@@ -87,5 +88,4 @@ public class Battle : MonoBehaviour {
 
         pathObject.transform.position = destination;
     }
-
 }

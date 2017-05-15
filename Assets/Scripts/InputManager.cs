@@ -39,6 +39,7 @@ public class InputManager : MonoBehaviour
             if (Input.GetMouseButtonDown(0))    // If the user presses the left mouse button, set the path for the character
             {
                 currentTileCoord = TouchTile(hitInfo.point);
+                tileGrid.CalculateDistance(battle.players[0].coordinates, currentTileCoord);
                 battle.MoveOrSelectPath(currentTileCoord);
                 tileGrid.HighlightTile(currentTileCoord);
             }

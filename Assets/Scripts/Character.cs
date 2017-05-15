@@ -4,8 +4,6 @@ using System.Collections;
 
 public class Character
 {
-	enum Direction : int {NW=180, NE=-90, SW=90, SE=0};
-
     public int currDir;	                // Direction character is currently facing
 	
 	int maxHP = 100;                    // Character's maximum hit points
@@ -16,7 +14,7 @@ public class Character
 
     public string charClass;            // Stores the character's class
 
-    public GameObject charObject;              // Reference to the character's physical game object
+    public GameObject charObject;       // Reference to the character's physical game object
 
 	public Character(string charClass, float x, float z)
 	{
@@ -24,7 +22,7 @@ public class Character
 		currMP = maxMP;                 // Current movement is the max
         this.charClass = charClass;
 
-		currDir = (int)Direction.NE;    // Character is facing NE
+		currDir = (int)CharacterDirection.NE;    // Character is facing NE
 
         string assetPath = "Characters/" + charClass;
 
@@ -33,15 +31,5 @@ public class Character
         Quaternion r = Quaternion.Euler(0f, currDir, 0f);                           // Rotation is facing NE
         charObject.transform.position = new Vector3(x, y, z);                       // Initialize the character's position
         charObject.transform.rotation = r;                                          // Initialize the character's rotation
-    }
-
-    //  Moves the character to the specified position; translate on the Y based on model's height
-    public void MoveCharacter(Vector3 newPosition)
-    {
-        charObject.transform.position = new Vector3(
-            newPosition.x,
-            charObject.transform.GetChild(0).transform.lossyScale.y / 2.0f,
-            newPosition.z
-        );               // Set the actual model to the appropriate position
     }
 }

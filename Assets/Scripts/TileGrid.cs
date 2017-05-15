@@ -100,12 +100,23 @@ public class TileGrid : MonoBehaviour
         tile.coordinates = TileCoordinates.FromOffsetCoordinates(x, z);
         tile.color = defaultColor;
 
+        if(x > 0)   // Set the E-W neighbors for each of the tiles
+        {
+            tile.SetNeighbor(TileDirection.W, tiles[i - 1]);
+        }
+
+        if(z > 0)
+        {
+            tile.SetNeighbor(TileDirection.S, tiles[(z - 1) * width + x]);
+        }
+
         if (disableLabel == 0)
         {
             Text label = Instantiate<Text>(tileLabelPrefab);
             label.rectTransform.SetParent(gridCanvas.transform, false);
             label.rectTransform.anchoredPosition = new Vector2(position.x, position.z);
-            label.text = tile.coordinates.ToStringOnSeparateLines();
+      //      label.text = tile.coordinates.ToStringOnSeparateLines();
+            tile.uiRect = label.rectTransform;
         }
         
     } // end CreateTile
@@ -114,7 +125,52 @@ public class TileGrid : MonoBehaviour
     {
         int index = coordinates.X + coordinates.Z * width;
         TileCell tile = tiles[index];
+
+        for (int i = 0; i < tiles.Length; i++)
+            tiles[i].color = defaultColor;
+
         tile.color = touchedColor;
+
         tileMesh.BuildMesh(tiles);
     }
+
+    public void CalculateDistance(TileCoordinates startCoords, TileCoordinates endCoords)
+    {
+        StopAllCoroutines();
+
+        StartCoroutine(Search(endCoords));
+    }
+
+    IEnumerator Search (TileCoordinates coordinates)
+    {
+        for (int i = 0; i < tiles.Length; i++)
+        {
+            tiles[i].Distance = int.MaxValue;
+        }
+
+        WaitForSeconds delay = new WaitForSeconds(1 / 60f);
+        Queue<TileCell> frontier = new Queue<TileCell>();
+
+        tiles[coordinates.X + Mathf.RoundToInt(coordinates.Z * width)].Distance = 0;
+
+        frontier.Enqueue(tiles[coordinates.X + Mathf.RoundToInt(coordinates.Z * width)]);
+
+        while(frontier.Count > 0)
+        {
+            yield return delay;
+            TileCell current = frontier.Dequeue();
+
+            for(TileDirection d = TileDirection.N; d <= TileDirection.S; d++)
+            {
+                TileCell neighbor = current.GetNeighbor(d);
+                if(neighbor != null && neighbor.Distance == int.MaxValue)
+                {
+                    neighbor.Distance = current.Distance + 1;
+                    frontier.Enqueue(neighbor);
+                }
+            }
+        }
+    }
+
+
 }
