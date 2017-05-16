@@ -47,15 +47,17 @@ public class Battle : MonoBehaviour {
 	} // end Start
 	
     // Moves the character to the selected tile or shows the path from the character to the selected tile
-    public void MoveOrSelectPath(TileCoordinates coordinates)
+    public bool MoveOrSelectPath(TileCell tile)
     {
         if(isSetup) // If we are still in the setup phase, move the character to the specified location
         {
             //      players[0].MoveCharacter(newPosition);  // Move the character
-            MovementManager.MoveObject(players[0].characters[0].charObject, coordinates);
-            players[0].coordinates = coordinates;   // Set the player's coordinates on the TileGrid
+            MovementManager.MoveObject(players[0].characters[0].charObject, tile.coordinates);
+            players[0].coordinates = tile.coordinates;   // Set the player's coordinates on the TileGrid
             isSetup = false;                        // No longer in the setup phase
             Destroy(restricted);                    // Destroy the restricted area
+
+            return true; 
         }
         else                // Show path to selected tile
         {
@@ -76,6 +78,7 @@ public class Battle : MonoBehaviour {
                 isSelected = true;
             }
             */
+            return false;
         }
             
     } // end MoveorSelectCharacter

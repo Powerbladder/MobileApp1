@@ -7,6 +7,8 @@ public class InputManager : MonoBehaviour
     static GameObject _tileMap;
     static Battle battle;
     static TileGrid tileGrid;
+    static TileCell playerTile;     // Player's current TileCell
+    static TileCell currentTile;    // Currently selected TileCell
 
     LayerMask floorMask;            // mask of the floor to determine raycast hits
     LayerMask restricted;           // mask of the restricted area during initial character positioning
@@ -34,14 +36,20 @@ public class InputManager : MonoBehaviour
  //      if (_tileMap.GetComponent<Collider>().Raycast(ray, out hitInfo, Mathf.Infinity)) // If it hits our TileMap, do stuff
         if (Physics.Raycast(ray, out hitInfo, Mathf.Infinity, floorMask))
         {
-            TileCoordinates currentTileCoord;
-
             if (Input.GetMouseButtonDown(0))    // If the user presses the left mouse button, set the path for the character
             {
-                currentTileCoord = TouchTile(hitInfo.point);
-                tileGrid.CalculateDistance(battle.players[0].coordinates, currentTileCoord);
-                battle.MoveOrSelectPath(currentTileCoord);
-                tileGrid.HighlightTile(currentTileCoord);
+                currentTile = tileGrid.GetTile(hitInfo.point);
+
+                if (battle.MoveOrSelectPath(currentTile))   // If the character actually moved
+                {
+                    playerTile = currentTile;               // Set the character's tile to the currently selected one
+                    return;                                 // Then exit to the next update
+                }
+
+                if (currentTile != playerTile)   // If the currently selected tile is not the same as the player's tile
+                    tileGrid.FindPath(playerTile, currentTile);    // Calculate the distance between the 2
+
+                tileGrid.HighlightTile(currentTile);
             }
         }
         else
@@ -50,12 +58,11 @@ public class InputManager : MonoBehaviour
         }
     } // end Update
 
-    // Translates x,z coords on the map to tile coords
-    public static TileCoordinates TouchTile(Vector3 position)
+    // Translates x,z coords on the map to the appropriate TileCell
+    public static TileCell TouchTile(Vector3 position)
     {
         position = _tileMap.transform.InverseTransformPoint(position);
-        TileCoordinates tileCoords = TileCoordinates.FromPosition(position);
 
-        return tileCoords;
+        return tileGrid.GetTile(position);
     }
 }

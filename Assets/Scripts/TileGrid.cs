@@ -44,7 +44,7 @@ public struct TileCoordinates               // Struct to store where the tile is
         int iy = Mathf.RoundToInt(y);
 
         return new TileCoordinates(ix, iy);
-    }
+    } // end FromPosition
 } // end TileCoordinates
 
 
@@ -121,27 +121,38 @@ public class TileGrid : MonoBehaviour
         
     } // end CreateTile
 
-    public void HighlightTile(TileCoordinates coordinates)
+    public void HighlightTile(TileCell tile)
     {
-        int index = coordinates.X + coordinates.Z * width;
-        TileCell tile = tiles[index];
-
-        for (int i = 0; i < tiles.Length; i++)
-            tiles[i].color = defaultColor;
-
         tile.color = touchedColor;
 
         tileMesh.BuildMesh(tiles);
     }
 
-    public void CalculateDistance(TileCoordinates startCoords, TileCoordinates endCoords)
+    // Find the Tile associated with a particular set of coords
+    public TileCell GetTile(Vector3 position)
+    {
+        position = transform.InverseTransformPoint(position);
+        TileCoordinates coordinates = TileCoordinates.FromPosition(position);
+        int index = coordinates.X + coordinates.Z * width;
+
+        return tiles[index];
+    } // end FindTile
+
+    public void FindPath(TileCell startCell, TileCell endCell)
     {
         StopAllCoroutines();
+        ClearPath();
+        StartCoroutine(Search(startCell, endCell));
+    } // end FindPath
 
-        StartCoroutine(Search(endCoords));
+    // Clears out any previously highlighted path
+    public void ClearPath()
+    {
+        for (int i = 0; i < tiles.Length; i++)
+            tiles[i].color = defaultColor;
     }
 
-    IEnumerator Search (TileCoordinates coordinates)
+    IEnumerator Search (TileCell startCell, TileCell endCell)
     {
         for (int i = 0; i < tiles.Length; i++)
         {
@@ -151,14 +162,27 @@ public class TileGrid : MonoBehaviour
         WaitForSeconds delay = new WaitForSeconds(1 / 60f);
         Queue<TileCell> frontier = new Queue<TileCell>();
 
-        tiles[coordinates.X + Mathf.RoundToInt(coordinates.Z * width)].Distance = 0;
+        startCell.Distance = 0;
 
-        frontier.Enqueue(tiles[coordinates.X + Mathf.RoundToInt(coordinates.Z * width)]);
+        frontier.Enqueue(startCell);
 
         while(frontier.Count > 0)
         {
             yield return delay;
             TileCell current = frontier.Dequeue();
+
+            if (current == endCell) // If the tile we are examining is the end tile, break the loop
+            {
+                current = current.PathFrom;
+                while(current != startCell)
+                {
+                    HighlightTile(current);
+                    current = current.PathFrom;
+                }
+                HighlightTile(startCell);
+
+                break;
+            }
 
             for(TileDirection d = TileDirection.N; d <= TileDirection.S; d++)
             {
@@ -166,11 +190,10 @@ public class TileGrid : MonoBehaviour
                 if(neighbor != null && neighbor.Distance == int.MaxValue)
                 {
                     neighbor.Distance = current.Distance + 1;
+                    neighbor.PathFrom = current;
                     frontier.Enqueue(neighbor);
                 }
             }
         }
-    }
-
-
+    } // end Search
 }

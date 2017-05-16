@@ -23,6 +23,8 @@ public class TileCell : MonoBehaviour
         set { distance = value; UpdateDistanceLabel(); }
     }
 
+    public TileCell PathFrom { get; set; }
+
     void Awake()
     {
         width = transform.localScale.x;
