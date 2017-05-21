@@ -20,10 +20,14 @@ public class TileCell : MonoBehaviour
     public int Distance
     {
         get { return distance; }
-        set { distance = value; UpdateDistanceLabel(); }
+        set { distance = value; /* UpdateDistanceLabel(); */ }
     }
 
-    public TileCell PathFrom { get; set; }
+    // Variables to handle pathfinding
+    public TileCell PathFrom { get; set; }      // Stores how this TileCell was reached
+    public int SearchHeuristic { get; set; }    // For better pathfinding
+    public int SearchPriority { get { return distance + SearchHeuristic; } }
+    public TileCell NextWithSamePriority { get; set; }
 
     void Awake()
     {

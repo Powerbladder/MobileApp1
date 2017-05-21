@@ -45,6 +45,11 @@ public struct TileCoordinates               // Struct to store where the tile is
 
         return new TileCoordinates(ix, iy);
     } // end FromPosition
+
+    public int DistanceTo(TileCoordinates coordinates)
+    {
+        return Mathf.Abs(this.X - coordinates.X) + Mathf.Abs(this.Z - coordinates.Z);
+    }
 } // end TileCoordinates
 
 
@@ -59,6 +64,8 @@ public class TileGrid : MonoBehaviour
 
     public Color defaultColor = Color.white;
     public Color touchedColor = Color.magenta;
+
+    Stack<TileCell> path;                        // Stores the character's path
 
  //   public Color defaultColor = Color.white;
 
@@ -75,6 +82,7 @@ public class TileGrid : MonoBehaviour
         tileMesh = GetComponentInChildren<TileMesh>();
 
         tiles = new TileCell[width * height];
+        path = new Stack<TileCell>();
         
         for(int z = 0, i = 0; z < height; z++)
         {
@@ -145,11 +153,13 @@ public class TileGrid : MonoBehaviour
         StartCoroutine(Search(startCell, endCell));
     } // end FindPath
 
-    // Clears out any previously highlighted path
+    // Clears out any previously highlighted path, also clears the associated list
     public void ClearPath()
     {
         for (int i = 0; i < tiles.Length; i++)
             tiles[i].color = defaultColor;
+
+        path.Clear();
     }
 
     IEnumerator Search (TileCell startCell, TileCell endCell)
@@ -159,27 +169,34 @@ public class TileGrid : MonoBehaviour
             tiles[i].Distance = int.MaxValue;
         }
 
-        WaitForSeconds delay = new WaitForSeconds(1 / 60f);
-        Queue<TileCell> frontier = new Queue<TileCell>();
+        //       WaitForSeconds delay = new WaitForSeconds(1 / 60f);
+        WaitForSeconds delay = new WaitForSeconds(0f);
+        List<TileCell> frontier = new List<TileCell>();
 
         startCell.Distance = 0;
 
-        frontier.Enqueue(startCell);
+        frontier.Add(startCell);
 
         while(frontier.Count > 0)
         {
+            frontier.Sort((x, y) => x.SearchPriority.CompareTo(y.SearchPriority));
+
             yield return delay;
-            TileCell current = frontier.Dequeue();
+            TileCell current = frontier[0];
+            frontier.RemoveAt(0);
 
             if (current == endCell) // If the tile we are examining is the end tile, break the loop
             {
+                path.Push(endCell);
                 current = current.PathFrom;
-                while(current != startCell)
+                while(current != startCell) // While we haven't gotten to the start location
                 {
-                    HighlightTile(current);
+                    HighlightTile(current); // Highlight the tile
+                    path.Push(current);     // Add the tile to our path list
                     current = current.PathFrom;
-                }
+                } // end while
                 HighlightTile(startCell);
+                path.Push(startCell);
 
                 break;
             }
@@ -191,9 +208,15 @@ public class TileGrid : MonoBehaviour
                 {
                     neighbor.Distance = current.Distance + 1;
                     neighbor.PathFrom = current;
-                    frontier.Enqueue(neighbor);
+                    neighbor.SearchHeuristic = 4*neighbor.coordinates.DistanceTo(endCell.coordinates);
+                    frontier.Add(neighbor);
                 }
             }
         }
     } // end Search
+
+    public Stack<TileCell> GetPath()
+    {
+        return path;
+    }
 }

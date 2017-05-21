@@ -84,15 +84,16 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Assets\Scripts\Battle.cs" />
-    <Compile Include="Assets\Scripts\Character.cs" />
+    <Compile Include="Assets\Scripts\Battle\Battle.cs" />
+    <Compile Include="Assets\Scripts\Battle\Character.cs" />
+    <Compile Include="Assets\Scripts\Battle\Player.cs" />
     <Compile Include="Assets\Scripts\Enumerators.cs" />
-    <Compile Include="Assets\Scripts\InputManager.cs" />
-    <Compile Include="Assets\Scripts\MovementManager.cs" />
-    <Compile Include="Assets\Scripts\Player.cs" />
-    <Compile Include="Assets\Scripts\TileCell.cs" />
-    <Compile Include="Assets\Scripts\TileGrid.cs" />
-    <Compile Include="Assets\Scripts\TileMesh.cs" />
+    <Compile Include="Assets\Scripts\Managers\InputManager.cs" />
+    <Compile Include="Assets\Scripts\Managers\MovementManager.cs" />
+    <Compile Include="Assets\Scripts\Map\TileCell.cs" />
+    <Compile Include="Assets\Scripts\Map\TileGrid.cs" />
+    <Compile Include="Assets\Scripts\Map\TileMesh.cs" />
+    <Compile Include="Assets\Scripts\Unused\TileCellPriorityQueue.cs" />
     <Compile Include="Assets\TileData\TDMap.cs" />
     <Compile Include="Assets\TileData\TDTile.cs" />
     <Compile Include="Assets\TileGraphics\TGMap.cs" />

@@ -20,7 +20,7 @@ MonoBehaviour:
   m_ShowMode: 4
   m_Title: 
   m_RootView: {fileID: 4}
-  m_MinSize: {x: 950, y: 300}
+  m_MinSize: {x: 950, y: 542}
   m_MaxSize: {x: 10000, y: 10000}
 --- !u!114 &2
 MonoBehaviour:
@@ -439,8 +439,8 @@ MonoBehaviour:
     height: 478
   m_TreeViewState:
     scrollPos: {x: 0, y: 0}
-    m_SelectedIDs: 70060000
-    m_LastClickedID: 0
+    m_SelectedIDs: bc250000
+    m_LastClickedID: 9660
     m_ExpandedIDs: dafbffff00000000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
@@ -534,19 +534,19 @@ MonoBehaviour:
     m_ShowAllHits: 0
     m_SearchArea: 0
     m_Folders:
-    - Assets/Scripts
+    - Assets/Scripts/Battle
   m_ViewMode: 1
   m_StartGridSize: 16
   m_LastFolders:
-  - Assets/Scripts
+  - Assets/Scripts/Battle
   m_LastFoldersGridSize: 16
   m_LastProjectPath: C:\Users\Baker\Documents\MobileApp1
   m_IsLocked: 0
   m_FolderTreeState:
     scrollPos: {x: 0, y: 0}
-    m_SelectedIDs: 3e250000
-    m_LastClickedID: 9534
-    m_ExpandedIDs: 0000000082230000a2230000a4230000d4230000ac240000ce240000f02400003e2500005c2500001a26000000ca9a3bffffff7f
+    m_SelectedIDs: 44250000
+    m_LastClickedID: 9540
+    m_ExpandedIDs: 0000000084230000a4230000a6230000d6230000ae240000d0240000e224000032250000522500001a26000000ca9a3bffffff7f
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -574,7 +574,7 @@ MonoBehaviour:
     scrollPos: {x: 0, y: 0}
     m_SelectedIDs: 
     m_LastClickedID: 0
-    m_ExpandedIDs: 0000000082230000a2230000a4230000d4230000ac240000ce240000f02400003e2500005c2500001a260000
+    m_ExpandedIDs: 0000000084230000a4230000a6230000d6230000ae240000d0240000e224000032250000522500001a260000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -737,9 +737,9 @@ MonoBehaviour:
   m_isRotationLocked: 0
   m_AudioPlay: 0
   m_Position:
-    m_Target: {x: 44.33288, y: -3.6171875, z: 25.311033}
+    m_Target: {x: 48.076008, y: -9.5, z: 24.938934}
     speed: 2
-    m_Value: {x: 44.33288, y: -3.6171875, z: 25.311033}
+    m_Value: {x: 48.076008, y: -9.5, z: 24.938934}
   m_RenderMode: 0
   m_ValidateTrueMetals: 0
   m_SceneViewState:
@@ -766,9 +766,9 @@ MonoBehaviour:
     speed: 2
     m_Value: {x: -0.7071068, y: 0, z: -0, w: -0.7071068}
   m_Size:
-    m_Target: 62.89262
+    m_Target: 59.646008
     speed: 2
-    m_Value: 62.89262
+    m_Value: 59.646008
   m_Ortho:
     m_Target: 1
     speed: 2

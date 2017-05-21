@@ -9,11 +9,11 @@ public class Battle : MonoBehaviour {
 
     public Player[] players;        // Contains all of the players in the battle
 
+    GameObject _tileMap;            // The battle map
     GameObject restricted;          // Get the restricted area
     bool isSetup;                   // Is this the setup phase of the battle?
     bool isSelected;                // Do we have a tile selected?
-
-    static Dictionary<int, GameObject> pathList;            // Dictionary containing all of the objects for the highlighted movement path
+    public bool endTurn;            // Has the player hit the "End Turn" button?
 
  //   static Dictionary<int, Character> charList;           // Dictionary that stores all of the character objects in the battle
 
@@ -21,13 +21,13 @@ public class Battle : MonoBehaviour {
     void Start ()
     {
         isSetup = true;
-        isSelected = false;
+ //       isSelected = false;
+        endTurn = false;
 
         restricted = GameObject.Instantiate(Resources.Load("Map/Restricted")) as GameObject;                 // Get the restricted area
         restricted.transform.position = new Vector3(52.5f, 0.01f, 25f);
 
         //       charList = new Dictionary<int, Character>();
-        pathList = new Dictionary<int, GameObject>();
 
         players = new Player[numPlayers];       // Initialize size based on the number of players in the battle
         
@@ -83,12 +83,8 @@ public class Battle : MonoBehaviour {
             
     } // end MoveorSelectCharacter
 
-    public void ShowPath(Vector3 origin, Vector3 destination)
+    public void EndTurn()
     {
-        string assetPath = "Map/SelectionCube";
-        GameObject pathObject = GameObject.Instantiate(Resources.Load(assetPath)) as GameObject;
-        pathList[pathObject.GetInstanceID()] = pathObject;
-
-        pathObject.transform.position = destination;
-    }
+        endTurn = true;
+    } // end EndTurn
 }

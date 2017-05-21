@@ -33,10 +33,10 @@ public class InputManager : MonoBehaviour
         if (Physics.Raycast(ray, out hitInfo, Mathf.Infinity, restricted))
             return;
 
- //      if (_tileMap.GetComponent<Collider>().Raycast(ray, out hitInfo, Mathf.Infinity)) // If it hits our TileMap, do stuff
         if (Physics.Raycast(ray, out hitInfo, Mathf.Infinity, floorMask))
         {
-            if (Input.GetMouseButtonDown(0))    // If the user presses the left mouse button, set the path for the character
+            // If the user presses the left mouse button, set the path for the character
+            if (Input.GetMouseButtonDown(0))    
             {
                 currentTile = tileGrid.GetTile(hitInfo.point);
 
@@ -55,14 +55,17 @@ public class InputManager : MonoBehaviour
         else
         {
 
-        }
+        } // end if-else Raycast
+
+        // If the user is finished with their turn (pressed spacebar for now)
+        if(Input.GetKeyDown("space"))
+        {
+            battle.EndTurn();
+        } // end if-else end turn
     } // end Update
 
-    // Translates x,z coords on the map to the appropriate TileCell
-    public static TileCell TouchTile(Vector3 position)
+    public static void SetPlayerTile(TileCell tile)
     {
-        position = _tileMap.transform.InverseTransformPoint(position);
-
-        return tileGrid.GetTile(position);
+        playerTile = tile;
     }
 }
