@@ -1,4 +1,4 @@
-﻿public enum CharacterDirection : int { NW = 180, NE = -90, SW = 90, SE = 0 }
+﻿public enum CharacterDirection : int { N = 180, E = -90, W = 90, S = 0 }
 
 public enum TileDirection { N, W, E, S}
 

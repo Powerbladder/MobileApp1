@@ -51,4 +51,18 @@ public class TileCell : MonoBehaviour
         neighbors[(int)direction] = tile;
         tile.neighbors[(int)direction.Opposite()] = this;
     }
+
+    public Quaternion GetNeighborRotation(TileCell tile)
+    {
+        if(neighbors[0] == tile)
+            return Quaternion.Euler(0, (int)CharacterDirection.S, 0);
+        if (neighbors[1] == tile)
+            return Quaternion.Euler(0, (int)CharacterDirection.E, 0);
+        if (neighbors[2] == tile)
+            return Quaternion.Euler(0, (int)CharacterDirection.W, 0);
+        if (neighbors[3] == tile)
+            return Quaternion.Euler(0, (int)CharacterDirection.N, 0);
+
+        return new Quaternion();
+    }
 }

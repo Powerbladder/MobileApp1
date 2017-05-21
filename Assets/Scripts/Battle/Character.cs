@@ -22,7 +22,7 @@ public class Character
 		currMP = maxMP;                 // Current movement is the max
         this.charClass = charClass;
 
-		currDir = (int)CharacterDirection.NE;    // Character is facing NE
+		currDir = (int)CharacterDirection.E;    // Character is facing E
 
         string assetPath = "Characters/" + charClass;
 

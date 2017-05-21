@@ -15,15 +15,17 @@ public class MovementManager : MonoBehaviour {
     static Stack<TileCell> path;    // Stores the current path
     static bool isMoving;           // Are we not yet done with the current path?
 
-    static float speed;
-    static float distCovered;
-    static float fracJourney;
-    static float journeyLength;
-    static float startTime;
+    static float speed;             // Speed characters move
+    static float rotationSpeed;     // Speed characters rotate
+    static float distCovered;       // Distance the object has moved through current leg
+    static float fracJourney;       // Percentage of current leg the character has moved through
+    static float journeyLength;     // Total length of the current leg (should be constant for square tiles)
     static TileCell start;
     static TileCell end;
-    static Vector3 sp;
-    static Vector3 ep;
+    static Vector3 sp;              // Start point for leg
+    static Vector3 ep;              // End point for leg
+    static Quaternion sr;           // Start rotation for leg
+    static Quaternion er;           // End rotation for leg
 
     // This class handles all of the movement for the game
 
@@ -39,12 +41,15 @@ public class MovementManager : MonoBehaviour {
         isMoving = false;
 
         speed = 10.0f;
+        rotationSpeed = 1f;
         distCovered = 0.0f;
         fracJourney = 0.0f;
         start = null;
         end = null;
         sp = new Vector3();
         ep = new Vector3();
+        sr = new Quaternion();
+        er = new Quaternion();
     }
 
     void Update()
@@ -115,17 +120,18 @@ public class MovementManager : MonoBehaviour {
                 sp = TranslateTileCoordinates(start.coordinates);
                 ep = TranslateTileCoordinates(end.coordinates);
 
-                startTime = Time.time;      // Get the time we started moving this leg
+                sr = battle.players[0].characters[0].charObject.transform.rotation;
+                er = end.GetNeighborRotation(start);
+
                 journeyLength = Vector3.Distance(sp, ep);   // Get the distance between endpoints
                 distCovered = 0.0f;
             } // end if fracJourney
 
-            startTime += Time.deltaTime;
-            MoveAlongPath(battle.players[0].characters[0].charObject, sp, ep);
+            MoveAlongPath(battle.players[0].characters[0].charObject, sp, ep, sr, er);
         } // end if endTurn
     } // end MoveCharacters
 
-    public static void MoveAlongPath(GameObject go, Vector3 start, Vector3 end)
+    public static void MoveAlongPath(GameObject go, Vector3 start, Vector3 end, Quaternion startRot, Quaternion endRot)
     {
         //     startTime += Time.deltaTime;
         //     distCovered = startTime * speed;
@@ -133,5 +139,6 @@ public class MovementManager : MonoBehaviour {
         fracJourney = distCovered / journeyLength;
 
         go.transform.position = Vector3.Lerp(start, end, fracJourney);
+        go.transform.rotation = Quaternion.Slerp(startRot, endRot, Time.time * rotationSpeed);
     } // end MoveAlongPath
 }
